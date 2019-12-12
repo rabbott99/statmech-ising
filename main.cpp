@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
             tmp = tmp * tmp;
             errors[i] += tmp;
         }
-        errors[i] *= (errors.size() - 1) / errors.size();
+        errors[i] *= (double) (results.size() - 1) / results.size();
         errors[i] = errors[i].sqrt();
     }
 
