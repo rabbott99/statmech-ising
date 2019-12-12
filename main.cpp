@@ -35,28 +35,46 @@ void print_jackknife(std::ostream &os, const std::vector<PhysicalResults> &resul
 
 int main(int argc, char **argv) {
     if (argc < 2) {
-        std::cerr << "Usage: ./ising L T" << std::endl;
+        std::cerr << "Usage: ./ising L" << std::endl;
         exit(1);
     }
     const int L = atoi(argv[1]);
-    double T = atof(argv[2]);
-    double beta = 1.0 / T;
 
     const int thermalization_iterations = 1e5;
     const int measurement_separation = 10;
     const int num_measurements = 3e4;
 
-    LatticeInt start = random_lattice(L);
-    std::vector<MeasurementResults> measurements = measurement_run(start,
-            beta, 0.0, thermalization_iterations,
-            measurement_separation, num_measurements);
+    const LatticeInt start = random_lattice(L);
 
-    std::vector<MeasurementResults> jackknife = jackknife_resample(measurements);
-    std::vector<PhysicalResults> results;
-    results.reserve(jackknife.size());
-    for (auto sample: jackknife) {
-        results.push_back(physical_results(sample, start.volume(), T));
+
+    const double Tmin = 0.015;
+    const double Tmax = 4.5;
+    const double Tstep = 0.015;
+    int num_temps = std::lround((Tmax - Tmin) / Tstep) + 1;
+
+    std::vector<std::vector<PhysicalResults>> output;
+    output.resize(num_temps);
+    for (int i = 0; i < num_temps; i++) {
+        double T = Tmin + i * Tstep;
+        double beta = 1.0 / T;
+        LatticeInt latt = start;
+        std::vector<MeasurementResults> measurements = measurement_run(latt,
+                beta, 0.0, thermalization_iterations,
+                measurement_separation, num_measurements);
+
+        std::vector<MeasurementResults> jackknife = jackknife_resample(measurements);
+        std::vector<PhysicalResults> results;
+        results.reserve(jackknife.size());
+        for (auto sample: jackknife) {
+            results.push_back(physical_results(sample, start.volume(), T));
+        }
+
+        output[i] = results;
     }
 
-    print_jackknife(std::cout, results);
+    for (int i = 0; i < num_temps; i++) {
+        double T = Tmin + i * Tstep;
+        std::cout << T << " ";
+        print_jackknife(std::cout, output[i]);
+    }
 }
