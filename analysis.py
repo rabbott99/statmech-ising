@@ -15,10 +15,8 @@ def read_output(filename):
 
 T, E, C, chi = read_output("out.txt")
 
-E_mean = np.mean(E, axis=1, keepdims=True)
-N = E.shape[1]
-E_errs = np.sqrt((N - 1.0) / N * np.sum((E - E_mean)**2, axis=1))
-E_mean = E_mean.flatten()
+E_mean = E[:,0]
+E_errs = E[:,1]
 
 plt.errorbar(T, E_mean, yerr=E_errs)
 plt.show()
