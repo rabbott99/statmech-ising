@@ -5,6 +5,14 @@
 #include "measure.h"
 
 template <typename T>
+T average(const std::vector<T> &values) {
+    T total = values[0];
+    for (size_t i = 1; i < values.size(); i++)
+        total += values[i];
+    return total / values.size();
+}
+
+template <typename T>
 std::vector<T> jackknife_resample(const std::vector<T> &samples) {
     assert(samples.size() > 1);
     T total = samples[0];
@@ -22,15 +30,6 @@ std::vector<T> jackknife_resample(const std::vector<T> &samples) {
 void print_result(std::ostream &os, const PhysicalResults &res) {
     os << res.energy << " " << res.heat_capacity << " "
         << res.susceptibility;
-}
-
-void print_jackknife(std::ostream &os, const std::vector<PhysicalResults> &results) {
-    for (size_t i = 0; i < results.size(); i++) {
-        print_result(os, results[i]);
-        if (i < results.size() - 1) {
-            os << " ";
-        }
-    }
 }
 
 int main(int argc, char **argv) {
@@ -52,8 +51,9 @@ int main(int argc, char **argv) {
     const double Tstep = 0.015;
     int num_temps = std::lround((Tmax - Tmin) / Tstep) + 1;
 
-    std::vector<std::vector<PhysicalResults>> output;
+    std::vector<PhysicalResults> output, errors;
     output.resize(num_temps);
+    errors.resize(num_temps);
 #pragma omp parallel for
     for (int i = 0; i < num_temps; i++) {
         double T = Tmin + i * Tstep;
@@ -70,13 +70,23 @@ int main(int argc, char **argv) {
             results.push_back(physical_results(sample, start.volume(), T));
         }
 
-        output[i] = results;
+        output[i] = average(results);
+
+        for (auto res: results) {
+            PhysicalResults tmp = res - output[i];
+            tmp = tmp * tmp;
+            errors[i] += tmp;
+        }
+        errors[i] *= (errors.size() - 1) / errors.size();
+        errors[i] = errors[i].sqrt();
     }
 
     for (int i = 0; i < num_temps; i++) {
         double T = Tmin + i * Tstep;
         std::cout << T << " ";
-        print_jackknife(std::cout, output[i]);
+        print_result(std::cout, output[i]);
+        std::cout << " ";
+        print_result(std::cout, errors[i]);
         std::cout << std::endl;
     }
 }

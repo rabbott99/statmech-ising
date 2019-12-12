@@ -42,6 +42,19 @@ class MeasurementResults {
             return ret;
         }
 
+        void operator /=(const double &c) {
+            energy /= c;
+            energy_squared /= c;
+            magnetization /= c;
+            magnetization_squared /= c;
+        }
+
+        MeasurementResults operator /(const double &c) const {
+            MeasurementResults ret = *this;
+            ret /= c;
+            return ret;
+        }
+
         MeasurementResults operator -() const {
             MeasurementResults ret = *this;
             ret *= -1.0;
@@ -67,6 +80,74 @@ struct PhysicalResults {
     double energy;
     double heat_capacity;
     double susceptibility;
+
+    void operator +=(const PhysicalResults &other) {
+        energy += other.energy;
+        heat_capacity += other.heat_capacity;
+        susceptibility += other.susceptibility;
+    }
+
+    PhysicalResults operator +(const PhysicalResults &other) const {
+        PhysicalResults ret = *this;
+        ret += other;
+        return ret;
+    }
+
+    void operator -=(const PhysicalResults &other) {
+        energy -= other.energy;
+        heat_capacity -= other.heat_capacity;
+        susceptibility -= other.susceptibility;
+    }
+
+    PhysicalResults operator -(const PhysicalResults &other) const {
+        PhysicalResults ret = *this;
+        ret -= other;
+        return ret;
+    }
+
+    void operator /=(const double &c) {
+        energy /= c;
+        heat_capacity /= c;
+        susceptibility /= c;
+    }
+
+    PhysicalResults operator /(const double &c) const {
+        PhysicalResults ret = *this;
+        ret /= c;
+        return ret;
+    }
+
+    void operator *=(const double &c) {
+        energy *= c;
+        heat_capacity *= c;
+        susceptibility *= c;
+    }
+
+    PhysicalResults operator *(const double &c) const {
+        PhysicalResults ret = *this;
+        ret *= c;
+        return ret;
+    }
+
+    void operator *=(const PhysicalResults &other) {
+        energy *= other.energy;
+        heat_capacity *= other.heat_capacity;
+        susceptibility *= other.susceptibility;
+    }
+
+    PhysicalResults operator *(const PhysicalResults &other) const {
+        PhysicalResults ret = *this;
+        ret *= other;
+        return ret;
+    }
+
+    PhysicalResults sqrt() const {
+        PhysicalResults ret = *this;
+        ret.energy = std::sqrt(ret.energy);
+        ret.heat_capacity = std::sqrt(ret.heat_capacity);
+        ret.susceptibility = std::sqrt(ret.susceptibility);
+        return ret;
+    }
 };
 
 inline std::ostream& operator <<(std::ostream &os, const PhysicalResults& r) {
