@@ -77,5 +77,6 @@ int main(int argc, char **argv) {
         double T = Tmin + i * Tstep;
         std::cout << T << " ";
         print_jackknife(std::cout, output[i]);
+        std::cout << std::endl;
     }
 }
