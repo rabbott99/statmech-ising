@@ -54,6 +54,7 @@ int main(int argc, char **argv) {
 
     std::vector<std::vector<PhysicalResults>> output;
     output.resize(num_temps);
+#pragma omp parallel for
     for (int i = 0; i < num_temps; i++) {
         double T = Tmin + i * Tstep;
         double beta = 1.0 / T;
