@@ -6,6 +6,8 @@
 #include <iostream>
 #include <random>
 
+#include <cassert>
+
 const int Nd = 2;
 
 // Computes val + diff modulo L

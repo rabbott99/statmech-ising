@@ -8,10 +8,10 @@ template <typename T>
 std::vector<T> jackknife_resample(const std::vector<T> &samples) {
     assert(samples.size() > 1);
     T total = samples[0];
-    for (int i = 1; i < samples.size(); i++) total += samples[i];
+    for (size_t i = 1; i < samples.size(); i++) total += samples[i];
 
     std::vector<T> ret(samples.size(), total);
-    for (int i = 0; i < samples.size(); i++) {
+    for (size_t i = 0; i < samples.size(); i++) {
         ret[i] -= samples[i];
         ret[i] *= 1.0 / (samples.size() - 1);
     }
@@ -25,7 +25,7 @@ void print_result(std::ostream &os, const PhysicalResults &res) {
 }
 
 void print_jackknife(std::ostream &os, const std::vector<PhysicalResults> &results) {
-    for (int i = 0; i < results.size(); i++) {
+    for (size_t i = 0; i < results.size(); i++) {
         print_result(os, results[i]);
         if (i < results.size() - 1) {
             os << " ";
