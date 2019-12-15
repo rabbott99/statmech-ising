@@ -53,7 +53,7 @@ static void run_sweep_checkerboard(LatticeInt &latt, double beta, double muB, in
 }
 
 void run_sweep(LatticeInt &latt, double beta, double muB) {
-    for (int cb = 0; cb < 1; cb++) {
+    for (int cb = 0; cb < 2; cb++) {
         run_sweep_checkerboard(latt, beta, muB, cb);
     }
 }
