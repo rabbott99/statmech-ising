@@ -15,7 +15,7 @@ LatticeInt random_lattice(int L) {
     return ret;
 }
 
-int get_sum_neighbors(const LatticeInt &latt, int idx) {
+static int get_sum_neighbors_general(const LatticeInt &latt, int idx) {
     std::vector<int> coord = latt.indexToCoord(idx);
     std::vector<int> neighbor(coord);
     int sum_neighbors = 0;
@@ -30,3 +30,34 @@ int get_sum_neighbors(const LatticeInt &latt, int idx) {
     return sum_neighbors;
 }
 
+static int get_sum_neighbors_2d(const LatticeInt &latt, int idx) {
+    const int vol = latt.volume();
+    const int L = latt.L;
+    int up = (idx + L) % vol;
+    int down = (idx + vol - latt.L) % vol;
+    int left, right;
+    if (idx % L == 0) {
+        left = idx + L - 1;
+    }
+    else {
+        left = idx - 1;
+    }
+    if (idx % L == L - 1) {
+        right = idx - L + 1;
+    }
+    else {
+        right = idx + 1;
+    }
+
+    return latt.values[up] + latt.values[down]
+        + latt.values[left] + latt.values[right];
+}
+
+int get_sum_neighbors(const LatticeInt &latt, int idx) {
+    if (Nd != 2) {
+        return get_sum_neighbors_general(latt, idx);
+    }
+    else {
+        return get_sum_neighbors_2d(latt, idx);
+    }
+}
