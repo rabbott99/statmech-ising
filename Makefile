@@ -1,7 +1,7 @@
 NAME?=ising
 CXX=g++
 LDFLAGS=
-CPPFLAGS= -g -Wall -std=c++11 -fopenmp
+CPPFLAGS= -g -Wall -std=c++11 -fopenmp -O3
 
 
 CPP_FILES := $(wildcard *.cpp)
