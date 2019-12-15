@@ -80,6 +80,7 @@ PhysicalResults physical_results(const MeasurementResults &measurements,
 
     const double M = measurements.magnetization;
     const double M2 = measurements.magnetization_squared;
+    ret.magnetization = M;
     ret.susceptibility = (M2 - M * M) * lattice_volume / T;
 
     return ret;

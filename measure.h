@@ -79,12 +79,14 @@ inline std::ostream& operator <<(std::ostream &os, const MeasurementResults& m) 
 struct PhysicalResults {
     double energy;
     double heat_capacity;
+    double magnetization;
     double susceptibility;
 
     void operator +=(const PhysicalResults &other) {
         energy += other.energy;
         heat_capacity += other.heat_capacity;
         susceptibility += other.susceptibility;
+        magnetization += other.magnetization;
     }
 
     PhysicalResults operator +(const PhysicalResults &other) const {
@@ -97,6 +99,7 @@ struct PhysicalResults {
         energy -= other.energy;
         heat_capacity -= other.heat_capacity;
         susceptibility -= other.susceptibility;
+        magnetization -= other.magnetization;
     }
 
     PhysicalResults operator -(const PhysicalResults &other) const {
@@ -109,6 +112,7 @@ struct PhysicalResults {
         energy /= c;
         heat_capacity /= c;
         susceptibility /= c;
+        magnetization /= c;
     }
 
     PhysicalResults operator /(const double &c) const {
@@ -121,6 +125,7 @@ struct PhysicalResults {
         energy *= c;
         heat_capacity *= c;
         susceptibility *= c;
+        magnetization *= c;
     }
 
     PhysicalResults operator *(const double &c) const {
@@ -133,6 +138,7 @@ struct PhysicalResults {
         energy *= other.energy;
         heat_capacity *= other.heat_capacity;
         susceptibility *= other.susceptibility;
+        magnetization *= other.magnetization;
     }
 
     PhysicalResults operator *(const PhysicalResults &other) const {
@@ -146,6 +152,7 @@ struct PhysicalResults {
         ret.energy = std::sqrt(ret.energy);
         ret.heat_capacity = std::sqrt(ret.heat_capacity);
         ret.susceptibility = std::sqrt(ret.susceptibility);
+        ret.magnetization = std::sqrt(ret.magnetization);
         return ret;
     }
 };
@@ -153,6 +160,7 @@ struct PhysicalResults {
 inline std::ostream& operator <<(std::ostream &os, const PhysicalResults& r) {
     os << "E = " << r.energy << std::endl;
     os << "C = " << r.heat_capacity << std::endl;
+    os << "magnetization = " << r.magnetization << std::endl;
     os << "chi = " << r.susceptibility << std::endl;
     return os;
 }

@@ -29,7 +29,7 @@ std::vector<T> jackknife_resample(const std::vector<T> &samples) {
 
 void print_result(std::ostream &os, const PhysicalResults &res) {
     os << res.energy << " " << res.heat_capacity << " "
-        << res.susceptibility;
+        << res.susceptibility << " " << res.magnetization;
 }
 
 int main(int argc, char **argv) {
