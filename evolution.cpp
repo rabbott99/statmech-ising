@@ -10,21 +10,6 @@ static double uniform_random() {
     return distribution(generator);
 }
 
-static int get_sum_neighbors(LatticeInt &latt, int idx) {
-    std::vector<int> coord = latt.indexToCoord(idx);
-    std::vector<int> neighbor(coord);
-    int sum_neighbors = 0;
-    for (int mu = 0; mu < Nd; mu++) {
-        neighbor[mu] = cyclic_shift(coord[mu], 1, latt.L);
-        sum_neighbors += latt.get_value(neighbor);
-        neighbor[mu] = cyclic_shift(coord[mu], -1, latt.L);
-        sum_neighbors += latt.get_value(neighbor);
-        neighbor[mu] = coord[mu];
-    }
-
-    return sum_neighbors;
-}
-
 void run_sweep(LatticeInt &latt, double beta, double muB) {
     assert(beta > 0);
     for (int idx = 0; idx < latt.volume(); idx++) {

@@ -14,3 +14,19 @@ LatticeInt random_lattice(int L) {
     }
     return ret;
 }
+
+int get_sum_neighbors(const LatticeInt &latt, int idx) {
+    std::vector<int> coord = latt.indexToCoord(idx);
+    std::vector<int> neighbor(coord);
+    int sum_neighbors = 0;
+    for (int mu = 0; mu < Nd; mu++) {
+        neighbor[mu] = cyclic_shift(coord[mu], 1, latt.L);
+        sum_neighbors += latt.get_value_const(neighbor);
+        neighbor[mu] = cyclic_shift(coord[mu], -1, latt.L);
+        sum_neighbors += latt.get_value_const(neighbor);
+        neighbor[mu] = coord[mu];
+    }
+
+    return sum_neighbors;
+}
+

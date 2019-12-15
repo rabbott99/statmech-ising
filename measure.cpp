@@ -7,14 +7,7 @@ static double spin_energy(const LatticeInt &latt) {
     for (int idx = 0; idx < latt.volume(); idx++) {
         std::vector<int> coord = latt.indexToCoord(idx);
         std::vector<int> neighbor(coord);
-        int sum_neighbors = 0;
-        for (int mu = 0; mu < Nd; mu++) {
-            neighbor[mu] = cyclic_shift(coord[mu], mu, 1);
-            sum_neighbors += latt.get_value_const(neighbor);
-            neighbor[mu] = cyclic_shift(coord[mu], mu, -1);
-            sum_neighbors += latt.get_value_const(neighbor);
-            neighbor[mu] = coord[mu];
-        }
+        int sum_neighbors = get_sum_neighbors(latt, idx);
         ret += latt.values[idx] * sum_neighbors;
     }
     // The factor of 1/2 comes from double counting
