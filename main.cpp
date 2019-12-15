@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     const int measurement_separation = 10;
     const int num_measurements = 3e4;
 
-    const LatticeInt start = random_lattice(L);
+    const LatticeInt start = random_lattice(L, 0);
 
 
     const double Tmin = 0.015;
