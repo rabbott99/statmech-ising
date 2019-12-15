@@ -10,17 +10,10 @@ static double uniform_random() {
     return distribution(generator);
 }
 
-static int get_checkerboard(const std::vector<int> &coord) {
-    int total = 0;
-    for (const int x: coord) total += x;
-    return (total % 2 == 0) ? 0 : 1;
-}
-
-static void run_sweep_checkerboard(LatticeInt &latt, double beta, double muB, int cb) {
+void run_sweep(LatticeInt &latt, double beta, double muB) {
     assert(beta > 0);
     for (int idx = 0; idx < latt.volume(); idx++) {
         std::vector<int> coord = latt.indexToCoord(idx);
-        if (get_checkerboard(coord) != cb) continue;
         std::vector<int> neighbor(coord);
         int sum_neighbors = 0;
         for (int mu = 0; mu < Nd; mu++) {
@@ -49,11 +42,5 @@ static void run_sweep_checkerboard(LatticeInt &latt, double beta, double muB, in
         }
         // Accept
         latt.values[idx] = -latt.values[idx];
-    }
-}
-
-void run_sweep(LatticeInt &latt, double beta, double muB) {
-    for (int cb = 0; cb < 2; cb++) {
-        run_sweep_checkerboard(latt, beta, muB, cb);
     }
 }
