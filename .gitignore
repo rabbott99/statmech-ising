@@ -5,3 +5,4 @@ ising
 *.png
 __pycache__
 *.pyc
+results
