@@ -199,7 +199,7 @@ plt.cla()
 for L in L_values:
     output = get_output(L)
     x = output.T
-    y = free_energy(output) / L**2
+    y = free_energy(L) / L**2
     plt.plot(x, y, label="L = {}".format(L))
 
 plt.title("Free energy per spin as a function of temperature")

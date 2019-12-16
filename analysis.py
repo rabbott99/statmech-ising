@@ -94,9 +94,10 @@ def entropy(output):
         ret.append(entropy_at_idx(output, i).nominal_value)
     return np.array(ret)
 
-def free_energy(output):
+def free_energy(L):
+    output = get_output(L)
     S = entropy(output)
-    return output.E - output.T * S
+    return output.E - output.T * S * L**2
 
 # Computes S(T = 4.5)
 def entropy_limit(L):
