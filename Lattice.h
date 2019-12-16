@@ -103,9 +103,9 @@ typedef Lattice<double> LatticeReal;
 
 inline void print_spin_lat(std::ostream &os, LatticeInt &latt) {
     for (int idx = 0; idx < latt.volume(); idx++) {
-        os << (latt.values[idx] > 0 ? "x" : " ");
+        os << (latt.values[idx] > 0 ? "x" : "o");
         if (idx % latt.L == latt.L - 1) {
-            std::cout << std::endl;
+            os << std::endl;
         }
     }
 }
