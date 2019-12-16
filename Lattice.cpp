@@ -11,6 +11,14 @@ LatticeInt random_lattice(int L, int seed) {
     return ret;
 }
 
+LatticeInt cold_lattice(int L, int val) {
+    LatticeInt ret(L);
+    for (int idx = 0; idx < ret.volume(); idx++) {
+        ret.values[idx] = val;
+    }
+    return ret;
+}
+
 static int get_sum_neighbors_general(const LatticeInt &latt, int idx) {
     std::vector<int> coord = latt.indexToCoord(idx);
     std::vector<int> neighbor(coord);

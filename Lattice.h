@@ -111,6 +111,7 @@ inline void print_spin_lat(std::ostream &os, LatticeInt &latt) {
 }
 
 LatticeInt random_lattice(int L, int seed = 0);
+LatticeInt cold_lattice(int L, int val = 1);
 int get_sum_neighbors(const LatticeInt &latt, int idx);
 
 #endif
