@@ -2,3 +2,6 @@
 ising
 *.txt
 *.swp
+*.png
+__pycache__
+*.pyc
